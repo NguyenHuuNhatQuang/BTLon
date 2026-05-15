@@ -12,4 +12,6 @@ public class Watch extends Item {
   public String getDetails() {
     return "Watch - Tên: " + getName() + " | Hãng: " + brand;
   }
+
+
 }
