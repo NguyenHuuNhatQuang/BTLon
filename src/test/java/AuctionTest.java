@@ -22,7 +22,7 @@ public class AuctionTest {
     // Đảm bảo mỗi test case đều có một môi trường sạch, không bị ảnh hưởng lẫn nhau
     @BeforeEach
     public void setUp() {
-        Item laptop = ItemFactory.createItem("Electronics", "ITM001", "Macbook Pro", "12");
+        Item laptop = ItemFactory.createItem("Electronics", "ITM001", "Macbook Pro", 12);
         LocalDateTime now = LocalDateTime.now();
 
         // Khởi tạo phiên với giá khởi điểm 1000.0, bước giá 50.0

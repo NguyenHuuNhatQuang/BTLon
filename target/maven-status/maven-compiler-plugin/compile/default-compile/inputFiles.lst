@@ -1,4 +1,6 @@
+D:\LTNC\BTLon\BTLon\src\main\java\model\item\Jewelry.java
 D:\LTNC\BTLon\BTLon\src\main\java\model\user\Seller.java
+D:\LTNC\BTLon\BTLon\src\main\java\model\item\Watch.java
 D:\LTNC\BTLon\BTLon\src\main\java\model\user\Bidder.java
 D:\LTNC\BTLon\BTLon\src\main\java\model\auction\Auction.java
 D:\LTNC\BTLon\BTLon\src\main\java\model\Entity.java
@@ -14,6 +16,7 @@ D:\LTNC\BTLon\BTLon\src\main\java\model\auction\AuctionManager.java
 D:\LTNC\BTLon\BTLon\src\main\java\model\item\Art.java
 D:\LTNC\BTLon\BTLon\src\main\java\pattern\Subject.java
 D:\LTNC\BTLon\BTLon\src\main\java\model\auction\BidTransaction.java
+D:\LTNC\BTLon\BTLon\src\main\java\model\item\Vehicle.java
 D:\LTNC\BTLon\BTLon\src\main\java\model\auction\AuctionStatus.java
 D:\LTNC\BTLon\BTLon\src\main\java\exception\UserNotFoundException.java
 D:\LTNC\BTLon\BTLon\src\main\java\model\item\Item.java

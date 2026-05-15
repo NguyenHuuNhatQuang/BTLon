@@ -3,12 +3,14 @@ model\user\Seller.class
 model\auction\BidTransaction.class
 model\item\Item.class
 pattern\Subject.class
+model\item\Jewelry.class
 model\auction\AuctionManager.class
 service\AuctionTimerService.class
 model\item\Electronics.class
 model\item\Art.class
 exception\AuctionClosedException.class
 model\auction\AuctionStatus.class
+model\item\Vehicle.class
 pattern\Observer.class
 exception\InvalidBidException.class
 model\user\Admin.class
@@ -17,3 +19,4 @@ model\user\User.class
 model\item\ItemFactory.class
 model\auction\Auction.class
 exception\UserNotFoundException.class
+model\item\Watch.class
