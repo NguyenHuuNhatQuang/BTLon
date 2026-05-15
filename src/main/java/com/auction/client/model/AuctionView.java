@@ -1,5 +1,6 @@
 package com.auction.client.model;
 
+import com.auction.shared.Payloads;
 import javafx.beans.property.*;
 
 /**
@@ -46,4 +47,23 @@ public class AuctionView {
     public String getStatus()     { return status.get(); }
     public String getTimeLeft()   { return timeLeft.get(); }
     public String getImageUrl()   { return imageUrl.get(); }
+
+    public void setCurrentBid(double v) { currentBid.set(v); }
+    public void setStatus(String v)     { status.set(v); }
+    public void setTimeLeft(String v)   { timeLeft.set(v); }
+
+    /** Map từ Server payload sang ViewModel (cầu nối shared package ↔ UI). */
+    public static AuctionView fromSummary(Payloads.AuctionSummaryPayload p) {
+        if (p == null) return null;
+        return new AuctionView(
+            p.id() != null ? p.id() : "?",
+            p.itemName() != null ? p.itemName() : "Không tên",
+            "Khác",
+            (p.sellerName() == null || p.sellerName().isEmpty()) ? "seller" : p.sellerName(),
+            p.currentBid(),
+            (p.status() == null || p.status().isEmpty()) ? "OPEN" : p.status(),
+            (p.timeLeft() == null || p.timeLeft().isEmpty()) ? "—" : p.timeLeft(),
+            p.imageUrl() != null ? p.imageUrl() : ""
+        );
+    }
 }

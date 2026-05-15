@@ -25,6 +25,7 @@ com\auction\client\network\NetworkManager.class
 exception\InvalidBidException.class
 model\user\Admin.class
 com\auction\client\util\ConnectionStatusBar.class
+com\auction\client\util\NetworkWiring.class
 model\user\User.class
 com\auction\client\controller\LoginController.class
 com\auction\client\Main.class
