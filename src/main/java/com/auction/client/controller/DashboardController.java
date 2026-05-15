@@ -65,13 +65,92 @@ public class DashboardController implements Initializable {
             return row;
         });
 
-        searchField.textProperty().addListener((obs, o, n) -> {
-            String key = n == null ? "" : n.toLowerCase().trim();
-            ObservableList<AuctionView> filtered = data.filtered(a ->
-                a.getItemName().toLowerCase().contains(key) ||
-                a.getCategory().toLowerCase().contains(key));
-            auctionTable.setItems(FXCollections.observableArrayList(filtered));
-            auctionGrid.getChildren().setAll(filtered.stream().map(this::buildProductCard).toList());
+        // Search + Sort + Filter combined
+        Runnable applyFilters = () -> applyFiltersAndSort(data);
+        searchField.textProperty().addListener((obs, o, n) -> applyFilters.run());
+        sortBox.valueProperty().addListener((obs, o, n) -> applyFilters.run());
+
+        // Click vào category icon → fill search
+        wireCategoryIcons();
+
+        // "Tham gia ngay" + "Xem tất cả" buttons
+        wireQuickActions(data);
+    }
+
+    private String activeCategory = null;
+
+    private void applyFiltersAndSort(ObservableList<AuctionView> data) {
+        String key = searchField.getText() == null ? "" : searchField.getText().toLowerCase().trim();
+        String sortBy = sortBox.getValue();
+
+        java.util.stream.Stream<AuctionView> stream = data.stream()
+            .filter(a -> activeCategory == null || a.getCategory().equalsIgnoreCase(activeCategory))
+            .filter(a -> key.isEmpty()
+                || a.getItemName().toLowerCase().contains(key)
+                || a.getCategory().toLowerCase().contains(key)
+                || a.getSellerName().toLowerCase().contains(key));
+
+        if (sortBy != null) {
+            switch (sortBy) {
+                case "Giá cao nhất"  -> stream = stream.sorted((x, y) -> Double.compare(y.getCurrentBid(), x.getCurrentBid()));
+                case "Giá thấp nhất" -> stream = stream.sorted((x, y) -> Double.compare(x.getCurrentBid(), y.getCurrentBid()));
+                case "Sắp kết thúc"  -> stream = stream.sorted((x, y) -> x.getTimeLeft().compareTo(y.getTimeLeft()));
+                default -> {}
+            }
+        }
+
+        java.util.List<AuctionView> filtered = stream.toList();
+        auctionTable.setItems(FXCollections.observableArrayList(filtered));
+        auctionGrid.getChildren().setAll(filtered.stream().map(this::buildProductCard).toList());
+    }
+
+    /** Tìm 10 VBox category trong scene và gắn click handler để filter. */
+    private void wireCategoryIcons() {
+        String[] categories = {
+            "Điện tử", "Nghệ thuật", "Phương tiện", "Trang sức", "Đồng hồ",
+            "Máy ảnh", "Sách", "Cổ vật", "Game", null  // last = "Tất cả" (clear filter)
+        };
+        javafx.application.Platform.runLater(() -> {
+            javafx.scene.Scene scene = auctionGrid.getScene();
+            if (scene == null) return;
+            // Tìm tất cả node có class category-icon
+            scene.getRoot().lookupAll(".category-icon").forEach(node -> {
+                int idx = scene.getRoot().lookupAll(".category-icon").stream()
+                    .toList().indexOf(node);
+                if (idx < 0 || idx >= categories.length) return;
+                final String cat = categories[idx];
+                node.setOnMouseClicked(e -> {
+                    activeCategory = cat;
+                    String label = cat == null ? "Tất cả danh mục" : cat;
+                    com.auction.client.util.AlertHelper.info("Lọc danh mục",
+                        "Đang xem: " + label);
+                    applyFiltersAndSort(mockData());
+                });
+            });
+        });
+    }
+
+    private void wireQuickActions(ObservableList<AuctionView> data) {
+        javafx.application.Platform.runLater(() -> {
+            javafx.scene.Scene scene = auctionGrid.getScene();
+            if (scene == null) return;
+
+            // Hero "THAM GIA NGAY" → mở auction LIVE đầu tiên
+            scene.getRoot().lookupAll(".hero-cta").forEach(node ->
+                node.setOnMouseClicked(e ->
+                    data.stream().filter(a -> "LIVE".equals(a.getStatus())).findFirst()
+                        .ifPresent(this::openDetail)
+                ));
+
+            // Hyperlink "Đang HOT" → fill search field
+            String[] hotKeys = {"Macbook", "iPhone", "Rolex", "Honda", "Tranh"};
+            int[] i = {0};
+            scene.getRoot().lookupAll("Hyperlink").forEach(node -> {
+                if (i[0] < hotKeys.length) {
+                    final String key = hotKeys[i[0]++];
+                    node.setOnMouseClicked(e -> searchField.setText(key));
+                }
+            });
         });
     }
 
