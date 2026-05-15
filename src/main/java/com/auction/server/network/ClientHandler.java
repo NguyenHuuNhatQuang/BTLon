@@ -117,7 +117,7 @@ public class ClientHandler implements Runnable {
             return;
         }
         try {
-            auction.placeBid(new Bidder(payload.bidderId(), payload.bidderId()), payload.amount());
+            auction.placeBid(new Bidder(payload.bidderId(), payload.bidderId(), "***"), payload.amount());
             sendBidResponse(true, auction.getCurrentHighestBid(), payload.bidderId(), null);
             server.broadcastUpdate(auction);
         } catch (Exception e) {
