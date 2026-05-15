@@ -19,13 +19,12 @@ public class Auction implements Subject {
     private final List<BidTransaction> bidTransactions;
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
-    private double currentHighestBid;
     private final double bidStep; // Bước giá
-    private AuctionStatus status;
-
     // Yêu cầu Tuần 7: Quản lý Observer và Xử lý Đa luồng
     private final List<Observer> observers;
     private final ReentrantLock lock;
+    private double currentHighestBid;
+    private AuctionStatus status;
 
     public Auction(String id, Item item, LocalDateTime startTime, LocalDateTime endTime, double startingPrice, double bidStep) {
         this.id = id;
