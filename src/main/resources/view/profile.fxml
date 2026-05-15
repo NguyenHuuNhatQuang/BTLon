@@ -18,81 +18,84 @@
             <VBox spacing="16">
                 <padding><Insets top="20" right="40" bottom="40" left="40"/></padding>
 
-                <!-- Profile banner -->
                 <HBox styleClass="profile-banner" alignment="CENTER_LEFT" spacing="20">
-                    <Label text="N" styleClass="avatar-large"/>
+                    <Label fx:id="avatarLabel" text="N" styleClass="avatar-large"/>
                     <VBox spacing="6">
-                        <Label text="Nguyễn Văn Nam" style="-fx-text-fill: white; -fx-font-size: 24; -fx-font-weight: bold;"/>
-                        <Label text="@nam_dev • Bidder cấp Vàng 🏅" style="-fx-text-fill: rgba(255,255,255,0.9);"/>
-                        <Label text="Tham gia: 13/04/2026 • 247 phiên" style="-fx-text-fill: rgba(255,255,255,0.85); -fx-font-size: 12;"/>
+                        <Label fx:id="fullNameLabel" text="..." style="-fx-text-fill: white; -fx-font-size: 24; -fx-font-weight: bold;"/>
+                        <Label fx:id="usernameLabel" text="@..." style="-fx-text-fill: rgba(255,255,255,0.9);"/>
+                        <Label fx:id="joinedLabel" text="..." style="-fx-text-fill: rgba(255,255,255,0.85); -fx-font-size: 12;"/>
                     </VBox>
                     <Region HBox.hgrow="ALWAYS"/>
                     <VBox alignment="CENTER" spacing="2">
-                        <Label text="32" styleClass="stat-mini"/>
+                        <Label fx:id="wonLabel" text="0" styleClass="stat-mini"/>
                         <Label text="ĐÃ THẮNG" styleClass="stat-mini-label"/>
                     </VBox>
                     <VBox alignment="CENTER" spacing="2">
-                        <Label text="158" styleClass="stat-mini"/>
+                        <Label fx:id="bidsLabel" text="0" styleClass="stat-mini"/>
                         <Label text="LƯỢT BID" styleClass="stat-mini-label"/>
                     </VBox>
                     <VBox alignment="CENTER" spacing="2">
-                        <Label text="⭐ 4.9" styleClass="stat-mini"/>
+                        <Label text="⭐ 5.0" styleClass="stat-mini"/>
                         <Label text="UY TÍN" styleClass="stat-mini-label"/>
                     </VBox>
                 </HBox>
 
-                <!-- Wallet card -->
                 <HBox spacing="16">
                     <VBox styleClass="card,card-padded" HBox.hgrow="ALWAYS" spacing="6">
                         <Label text="💰 SỐ DƯ VÍ" styleClass="caption"/>
-                        <Label text="125.000.000 ₫" styleClass="h1" style="-fx-text-fill: -fx-primary;"/>
+                        <Label fx:id="walletLabel" text="0 ₫" styleClass="h1" style="-fx-text-fill: -fx-primary;"/>
                         <HBox spacing="10">
-                            <Button text="+ Nạp tiền" styleClass="btn-primary"/>
-                            <Button text="Rút tiền"   styleClass="btn-secondary"/>
-                            <Button text="Lịch sử"    styleClass="btn-ghost"/>
+                            <Button text="+ Nạp tiền" styleClass="btn-primary" onAction="#handleDeposit"/>
+                            <Button text="Rút tiền"   styleClass="btn-secondary" onAction="#handleWithdraw"/>
+                            <Button text="Lịch sử"    styleClass="btn-ghost" onAction="#handleWalletHistory"/>
                         </HBox>
                     </VBox>
                     <VBox styleClass="card,card-padded" prefWidth="320" spacing="6">
                         <Label text="🔒 KÝ QUỸ ĐẤU GIÁ" styleClass="caption"/>
-                        <Label text="42.500.000 ₫" styleClass="h2"/>
-                        <Label text="Đang giữ cho 3 phiên đấu giá" styleClass="muted"/>
+                        <Label fx:id="escrowLabel" text="0 ₫" styleClass="h2"/>
+                        <Label fx:id="escrowSubLabel" text="Chưa có ký quỹ" styleClass="muted"/>
                     </VBox>
                 </HBox>
 
-                <!-- Menu -->
                 <VBox styleClass="card,card-padded" spacing="0">
-                    <HBox styleClass="sidebar-item" spacing="14" alignment="CENTER_LEFT" style="-fx-padding: 14;">
+                    <HBox styleClass="sidebar-item" spacing="14" alignment="CENTER_LEFT"
+                          style="-fx-padding: 14; -fx-cursor: hand;" onMouseClicked="#handleBidHistory">
                         <Label text="📜" style="-fx-font-size: 18;"/>
                         <Label text="Lịch sử đấu giá" style="-fx-font-weight: bold;"/>
                         <Region HBox.hgrow="ALWAYS"/>
                         <Label text="›" styleClass="muted"/>
                     </HBox>
-                    <HBox styleClass="sidebar-item" spacing="14" alignment="CENTER_LEFT" style="-fx-padding: 14;">
+                    <HBox styleClass="sidebar-item" spacing="14" alignment="CENTER_LEFT"
+                          style="-fx-padding: 14; -fx-cursor: hand;" onMouseClicked="#handleOrders">
                         <Label text="📦" style="-fx-font-size: 18;"/>
                         <Label text="Đơn hàng / Vận chuyển" style="-fx-font-weight: bold;"/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Label text="3 đơn đang giao" styleClass="caption"/>
+                        <Label fx:id="ordersBadge" text="" styleClass="caption"/>
                         <Label text="›" styleClass="muted"/>
                     </HBox>
-                    <HBox styleClass="sidebar-item" spacing="14" alignment="CENTER_LEFT" style="-fx-padding: 14;">
+                    <HBox styleClass="sidebar-item" spacing="14" alignment="CENTER_LEFT"
+                          style="-fx-padding: 14; -fx-cursor: hand;" onMouseClicked="#handleMyAuctions">
                         <Label text="🏷" style="-fx-font-size: 18;"/>
                         <Label text="Phiên đang đăng (Seller)" style="-fx-font-weight: bold;"/>
                         <Region HBox.hgrow="ALWAYS"/>
                         <Label text="›" styleClass="muted"/>
                     </HBox>
-                    <HBox styleClass="sidebar-item" spacing="14" alignment="CENTER_LEFT" style="-fx-padding: 14;">
+                    <HBox styleClass="sidebar-item" spacing="14" alignment="CENTER_LEFT"
+                          style="-fx-padding: 14; -fx-cursor: hand;" onMouseClicked="#handleChangePassword">
                         <Label text="🔐" style="-fx-font-size: 18;"/>
                         <Label text="Đổi mật khẩu" style="-fx-font-weight: bold;"/>
                         <Region HBox.hgrow="ALWAYS"/>
                         <Label text="›" styleClass="muted"/>
                     </HBox>
-                    <HBox styleClass="sidebar-item" spacing="14" alignment="CENTER_LEFT" style="-fx-padding: 14;">
+                    <HBox styleClass="sidebar-item" spacing="14" alignment="CENTER_LEFT"
+                          style="-fx-padding: 14; -fx-cursor: hand;" onMouseClicked="#handleNotiSettings">
                         <Label text="⚙" style="-fx-font-size: 18;"/>
                         <Label text="Cài đặt thông báo" style="-fx-font-weight: bold;"/>
                         <Region HBox.hgrow="ALWAYS"/>
                         <Label text="›" styleClass="muted"/>
                     </HBox>
-                    <HBox styleClass="sidebar-item" spacing="14" alignment="CENTER_LEFT" style="-fx-padding: 14;">
+                    <HBox styleClass="sidebar-item" spacing="14" alignment="CENTER_LEFT"
+                          style="-fx-padding: 14; -fx-cursor: hand;" onMouseClicked="#handleSupport">
                         <Label text="❓" style="-fx-font-size: 18;"/>
                         <Label text="Hỗ trợ" style="-fx-font-weight: bold;"/>
                         <Region HBox.hgrow="ALWAYS"/>

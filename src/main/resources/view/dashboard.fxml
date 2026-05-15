@@ -118,12 +118,13 @@
                         <Label text="FLASH AUCTION" styleClass="flash-title"/>
                         <Region HBox.hgrow="ALWAYS"/>
                         <Label text="Kết thúc:" style="-fx-text-fill: white; -fx-font-size: 12;"/>
-                        <Label text="01" styleClass="flash-timer-block"/>
+                        <Label fx:id="flashHourLbl" text="01" styleClass="flash-timer-block"/>
                         <Label text=":" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
-                        <Label text="23" styleClass="flash-timer-block"/>
+                        <Label fx:id="flashMinLbl"  text="23" styleClass="flash-timer-block"/>
                         <Label text=":" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
-                        <Label text="45" styleClass="flash-timer-block"/>
-                        <Hyperlink text="Xem tất cả  ›" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                        <Label fx:id="flashSecLbl"  text="45" styleClass="flash-timer-block"/>
+                        <Hyperlink text="Xem tất cả  ›" style="-fx-text-fill: white; -fx-font-weight: bold;"
+                                   onAction="#handleViewAllFlash"/>
                     </HBox>
                     <HBox styleClass="flash-body" spacing="14" fx:id="flashRow"/>
                 </VBox>

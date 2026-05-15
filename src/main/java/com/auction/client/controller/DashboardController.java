@@ -29,6 +29,9 @@ public class DashboardController implements Initializable {
     @FXML private ComboBox<String> sortBox;
     @FXML private FlowPane auctionGrid;
     @FXML private HBox flashRow;
+    @FXML private Label flashHourLbl;
+    @FXML private Label flashMinLbl;
+    @FXML private Label flashSecLbl;
 
     @FXML private TableView<AuctionView> auctionTable;
     @FXML private TableColumn<AuctionView, String> colName;
@@ -75,6 +78,38 @@ public class DashboardController implements Initializable {
 
         // "Tham gia ngay" + "Xem tất cả" buttons
         wireQuickActions(data);
+
+        // Flash Auction countdown realtime
+        startFlashCountdown();
+    }
+
+    private void startFlashCountdown() {
+        long[] remaining = {1L * 3600 + 23 * 60 + 45};  // 01:23:45
+        javafx.animation.Timeline t = new javafx.animation.Timeline(
+            new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), e -> {
+                if (remaining[0] <= 0) {
+                    flashHourLbl.setText("00");
+                    flashMinLbl.setText("00");
+                    flashSecLbl.setText("00");
+                    return;
+                }
+                remaining[0]--;
+                long h = remaining[0] / 3600;
+                long m = (remaining[0] % 3600) / 60;
+                long s = remaining[0] % 60;
+                flashHourLbl.setText(String.format("%02d", h));
+                flashMinLbl.setText(String.format("%02d", m));
+                flashSecLbl.setText(String.format("%02d", s));
+            }));
+        t.setCycleCount(javafx.animation.Timeline.INDEFINITE);
+        t.play();
+    }
+
+    @FXML private void handleViewAllFlash() {
+        AlertHelper.info("Flash Auction",
+            "Đang xem tất cả phiên Flash. Trạng thái LIVE sẽ được lọc ưu tiên.");
+        activeCategory = null;
+        sortBox.getSelectionModel().select("Sắp kết thúc");
     }
 
     private String activeCategory = null;
