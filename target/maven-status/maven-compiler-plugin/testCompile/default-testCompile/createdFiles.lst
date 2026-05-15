@@ -1,1 +1,3 @@
+com\auction\shared\MessageTest.class
 AuctionTest.class
+com\auction\integration\E2ETest.class
