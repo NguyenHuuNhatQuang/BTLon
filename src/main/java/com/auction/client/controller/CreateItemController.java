@@ -5,9 +5,19 @@ import com.auction.client.util.SceneRouter;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ResourceBundle;
 
 public class CreateItemController implements Initializable {
@@ -21,6 +31,10 @@ public class CreateItemController implements Initializable {
     @FXML private ComboBox<String> durationBox;
     @FXML private TextField buyNowField;
     @FXML private Label errorLabel;
+    @FXML private StackPane imageDrop;
+
+    private File selectedImage;
+    private byte[] selectedImageBytes;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -39,7 +53,61 @@ public class CreateItemController implements Initializable {
 
     @FXML
     private void handlePickImage() {
-        AlertHelper.info("Chọn ảnh", "FileChooser sẽ được tích hợp ở Tuần 9 khi có Server upload.");
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Chọn ảnh sản phẩm");
+        chooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Ảnh", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp"),
+            new FileChooser.ExtensionFilter("Tất cả file", "*.*"));
+
+        Window owner = imageDrop.getScene() != null ? imageDrop.getScene().getWindow() : null;
+        File f = chooser.showOpenDialog(owner);
+        if (f == null) return;
+
+        // Kiểm tra kích thước (tối đa 5MB)
+        long size = f.length();
+        if (size > 5L * 1024 * 1024) {
+            AlertHelper.error("Ảnh quá lớn",
+                "File " + (size / 1024 / 1024) + "MB vượt giới hạn 5MB.");
+            return;
+        }
+
+        try {
+            selectedImage = f;
+            selectedImageBytes = Files.readAllBytes(f.toPath());
+
+            // Load và hiển thị preview
+            Image img;
+            try (FileInputStream fis = new FileInputStream(f)) {
+                img = new Image(fis);
+            }
+            if (img.isError()) {
+                throw new IllegalArgumentException("File không phải ảnh hợp lệ.");
+            }
+
+            ImageView preview = new ImageView(img);
+            preview.setPreserveRatio(true);
+            preview.setFitHeight(200);
+            preview.setFitWidth(360);
+
+            Label changeHint = new Label("Click để đổi ảnh khác · " + f.getName()
+                + " (" + (size / 1024) + " KB)");
+            changeHint.setStyle("-fx-text-fill: white; -fx-background-color: rgba(0,0,0,0.6);"
+                + "-fx-padding: 6 12; -fx-background-radius: 50; -fx-font-size: 11;");
+
+            VBox wrap = new VBox(preview);
+            wrap.setAlignment(Pos.CENTER);
+
+            imageDrop.getChildren().setAll(wrap, changeHint);
+            StackPane.setAlignment(changeHint, Pos.BOTTOM_CENTER);
+            StackPane.setMargin(changeHint, new javafx.geometry.Insets(0, 0, 12, 0));
+
+            imageDrop.setStyle("-fx-background-color: white; -fx-background-radius: 12;"
+                + "-fx-border-color: -fx-primary; -fx-border-radius: 12;"
+                + "-fx-border-width: 2; -fx-cursor: hand;");
+
+        } catch (Exception ex) {
+            AlertHelper.error("Lỗi đọc ảnh", ex.getMessage());
+        }
     }
 
     @FXML
@@ -54,8 +122,12 @@ public class CreateItemController implements Initializable {
             return;
         }
 
+        String imgInfo = selectedImage != null
+            ? "\nẢnh: " + selectedImage.getName() + " (" + (selectedImageBytes.length / 1024) + " KB)"
+            : "\n(chưa chọn ảnh)";
         AlertHelper.info("Đăng thành công",
-            "Phiên đấu giá đã được gửi (mock). Tuần 9+ sẽ thực sự gửi qua Socket dạng CREATE_ITEM_REQUEST.");
+            "Phiên đấu giá đã được gửi." + imgInfo
+            + "\n\nKhi Server sẵn sàng: gửi qua Socket dạng CREATE_ITEM_REQUEST với imageBytes.");
         SceneRouter.go("dashboard");
     }
 
