@@ -12,6 +12,7 @@ D:\LTNC\BTLon\BTLon\src\main\java\exception\InvalidBidException.java
 D:\LTNC\BTLon\BTLon\src\main\java\pattern\Observer.java
 D:\LTNC\BTLon\BTLon\src\main\java\model\user\Admin.java
 D:\LTNC\BTLon\BTLon\src\main\java\service\AuctionTimerService.java
+D:\LTNC\BTLon\BTLon\src\main\java\model\user\UserFactory.java
 D:\LTNC\BTLon\BTLon\src\main\java\model\auction\AuctionManager.java
 D:\LTNC\BTLon\BTLon\src\main\java\model\item\Art.java
 D:\LTNC\BTLon\BTLon\src\main\java\pattern\Subject.java

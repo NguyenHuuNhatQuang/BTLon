@@ -18,5 +18,6 @@ model\Entity.class
 model\user\User.class
 model\item\ItemFactory.class
 model\auction\Auction.class
+model\user\UserFactory.class
 exception\UserNotFoundException.class
 model\item\Watch.class
