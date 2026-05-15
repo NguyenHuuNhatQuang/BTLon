@@ -29,8 +29,8 @@ public class AuctionTest {
         auction = new Auction("AUC001", laptop, now, now.plusMinutes(30), 1000.0, 50.0);
         auction.startAuction(); // Chuyển trạng thái sang RUNNING
 
-        bidder1 = new Bidder("USR001", "Alice");
-        bidder2 = new Bidder("USR002", "Bob");
+        bidder1 = new Bidder("USR001", "Alice", "default_password");
+        bidder2 = new Bidder("USR002", "Bob", "default_password");
     }
 
     @Test
