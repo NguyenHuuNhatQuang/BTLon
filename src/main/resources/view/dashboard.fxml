@@ -160,7 +160,7 @@
     <!-- ============ BOTTOM NAV (Shopee mobile feel) ============ -->
     <bottom>
         <HBox styleClass="bottom-nav" alignment="CENTER" spacing="40">
-            <Button text="Trang chủ"  graphic-text-gap="2" styleClass="bottom-nav-item,bottom-nav-item-active" onAction="#handleNavHome">
+            <Button text="Trang chủ" styleClass="bottom-nav-item,bottom-nav-item-active" onAction="#handleNavHome">
                 <graphic><Label text="🏠" style="-fx-font-size: 22;"/></graphic>
             </Button>
             <Button text="Live"       styleClass="bottom-nav-item" onAction="#handleNavLive">
