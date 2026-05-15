@@ -3,9 +3,9 @@ name: Java CI with Maven
 # Task 4.1: Tự động chạy khi push hoặc pull request vào các nhánh chính
 on:
   push:
-    branches: [ "main", "sunlight_dev" ]
+    branches: [ "master", "sunlight_dev" ]
   pull_request:
-    branches: [ "main", "sunlight_dev" ]
+    branches: [ "master", "sunlight_dev" ]
 
 jobs:
   build:
