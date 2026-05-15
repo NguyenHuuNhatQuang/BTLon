@@ -2,6 +2,7 @@ package com.auction.client.controller;
 
 import com.auction.client.util.AlertHelper;
 import com.auction.client.util.SceneRouter;
+import com.auction.client.util.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,6 +31,7 @@ public class LoginController {
             return;
         }
         clearError();
+        Session.login(user, "Bidder", null);
         SceneRouter.go("dashboard");
     }
 

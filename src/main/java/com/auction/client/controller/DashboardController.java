@@ -3,6 +3,7 @@ package com.auction.client.controller;
 import com.auction.client.model.AuctionView;
 import com.auction.client.util.AlertHelper;
 import com.auction.client.util.SceneRouter;
+import com.auction.client.util.Session;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,6 +42,10 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // Hiển thị thông tin user đã đăng nhập
+        userNameLabel.setText(Session.getUsername());
+        avatarLabel.setText(Session.getAvatarLetter());
+
         sortBox.setItems(FXCollections.observableArrayList(
             "Mới nhất", "Sắp kết thúc", "Giá cao nhất", "Giá thấp nhất", "Lượt bid nhiều"));
         sortBox.getSelectionModel().selectFirst();
@@ -191,8 +196,10 @@ public class DashboardController implements Initializable {
     @FXML private void handleNotifications() { SceneRouter.go("notifications"); }
     @FXML private void handleWatchlist()     { SceneRouter.go("watchlist"); }
     @FXML private void handleLogout() {
-        if (AlertHelper.confirm("Đăng xuất", "Bạn chắc chắn muốn thoát?"))
+        if (AlertHelper.confirm("Đăng xuất", "Bạn chắc chắn muốn thoát?")) {
+            Session.logout();
             SceneRouter.go("login");
+        }
     }
 
     /* ===== Bottom nav ===== */
