@@ -50,7 +50,7 @@ public class DashboardController implements Initializable {
             "Mới nhất", "Sắp kết thúc", "Giá cao nhất", "Giá thấp nhất", "Lượt bid nhiều"));
         sortBox.getSelectionModel().selectFirst();
 
-        ObservableList<AuctionView> data = mockData();
+        ObservableList<AuctionView> data = com.auction.client.util.AuctionStore.getAuctions();
 
         configureTable(data);
         auctionGrid.getChildren().setAll(data.stream().map(this::buildProductCard).toList());
@@ -124,7 +124,7 @@ public class DashboardController implements Initializable {
                     String label = cat == null ? "Tất cả danh mục" : cat;
                     com.auction.client.util.AlertHelper.info("Lọc danh mục",
                         "Đang xem: " + label);
-                    applyFiltersAndSort(mockData());
+                    applyFiltersAndSort(com.auction.client.util.AuctionStore.getAuctions());
                 });
             });
         });

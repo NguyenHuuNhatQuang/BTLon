@@ -1,7 +1,9 @@
 package com.auction.client.controller;
 
 import com.auction.client.util.AlertHelper;
+import com.auction.client.util.AuctionStore;
 import com.auction.client.util.SceneRouter;
+import com.auction.client.util.Session;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -122,12 +124,23 @@ public class CreateItemController implements Initializable {
             return;
         }
 
+        // Add vào AuctionStore - Dashboard sẽ thấy phiên mới ngay
+        double startPrice = parsePositive(startPriceField.getText(), "Giá khởi điểm");
+        String duration = durationBox.getValue() != null ? durationBox.getValue() : "24 giờ";
+        var newAuction = AuctionStore.add(
+            nameField.getText().trim(),
+            categoryBox.getValue(),
+            Session.getUsername(),
+            startPrice,
+            duration);
+
         String imgInfo = selectedImage != null
             ? "\nẢnh: " + selectedImage.getName() + " (" + (selectedImageBytes.length / 1024) + " KB)"
             : "\n(chưa chọn ảnh)";
         AlertHelper.info("Đăng thành công",
-            "Phiên đấu giá đã được gửi." + imgInfo
-            + "\n\nKhi Server sẵn sàng: gửi qua Socket dạng CREATE_ITEM_REQUEST với imageBytes.");
+            "Phiên #" + newAuction.getId() + " - " + newAuction.getItemName()
+            + " đã được tạo." + imgInfo
+            + "\nKéo lên đầu danh sách Dashboard.");
         SceneRouter.go("dashboard");
     }
 
